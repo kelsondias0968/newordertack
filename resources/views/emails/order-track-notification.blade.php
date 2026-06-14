@@ -1,0 +1,1 @@
+{!! $emailLog->body_html !!}
