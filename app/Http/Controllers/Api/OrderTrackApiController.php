@@ -7,21 +7,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderTrackRequest;
 use App\Models\OrderTrack;
 use App\Models\OrderTrackStage;
-use App\Services\OrderTrackEmailService;
 use App\Services\OrderTrackService;
 use App\Services\TrackingCodeGenerator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\App;
 
 class OrderTrackApiController extends Controller
 {
     public function store(
         StoreOrderTrackRequest $request,
         OrderTrackService $orderTrackService,
-        OrderTrackEmailService $orderTrackEmailService,
     ): JsonResponse
     {
-        $track = $orderTrackService->create($request->validated(), dispatchCreatedNotification: false);
-        $orderTrackEmailService->dispatchTrackCreatedNotificationAfterResponse($track);
+        $track = $orderTrackService->create($request->validated());
 
         return response()->json([
             'message' => __('tracking.api.track_created'),
@@ -73,19 +71,25 @@ class OrderTrackApiController extends Controller
                 'label' => $track->current_stage->label(),
                 'description' => $track->current_stage->description(),
             ],
-            'stages' => $track->stages->map(function (OrderTrackStage $stage) use ($currentStagePosition) {
-                return [
-                    'key' => $stage->stage_key->value,
-                    'label' => $stage->title,
-                    'description' => $stage->description,
-                    'duration_hours' => $stage->duration_hours,
-                    'planned_for_at' => $stage->planned_for_at?->toIso8601String(),
-                    'reached_at' => $stage->reached_at?->toIso8601String(),
-                    'state' => $this->stageState($stage, $currentStagePosition),
-                    'manual_override' => $stage->manual_override,
-                    'notes' => $stage->notes,
-                ];
-            })->values()->all(),
+            'stages' => $this->withTrackLocale($track->preferred_locale, fn () => $track->stages->map(
+                function (OrderTrackStage $stage) use ($currentStagePosition) {
+                    $isConfirmed = $stage->reached_at !== null;
+
+                    return [
+                        'key' => $stage->stage_key->value,
+                        'label' => $stage->title,
+                        'description' => $stage->description,
+                        'duration_hours' => $stage->duration_hours,
+                        'planned_for_at' => $stage->planned_for_at?->toIso8601String(),
+                        'reached_at' => $stage->reached_at?->toIso8601String(),
+                        'state' => $this->stageState($stage, $currentStagePosition),
+                        'is_confirmed' => $isConfirmed,
+                        'confirmed' => $isConfirmed ? __('tracking.states.yes') : __('tracking.states.no'),
+                        'manual_override' => $stage->manual_override,
+                        'notes' => $stage->notes,
+                    ];
+                }
+            )->values()->all()),
         ];
     }
 
@@ -100,5 +104,22 @@ class OrderTrackApiController extends Controller
         }
 
         return 'pending';
+    }
+
+    protected function withTrackLocale(?string $locale, callable $callback): mixed
+    {
+        $resolvedLocale = in_array($locale, ['en', 'pt'], true)
+            ? $locale
+            : config('app.locale', 'en');
+
+        $originalLocale = App::currentLocale();
+
+        App::setLocale($resolvedLocale);
+
+        try {
+            return $callback();
+        } finally {
+            App::setLocale($originalLocale);
+        }
     }
 }

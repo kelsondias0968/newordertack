@@ -55,6 +55,31 @@ class OrderTrackApiTest extends TestCase
         $this->assertNotEmpty($response->json('data.tracking_url'));
     }
 
+    public function test_it_marks_the_confirmed_stage_as_yes_by_default(): void
+    {
+        $response = $this
+            ->withHeader('tracking_token', $this->trackingToken)
+            ->postJson('/api/tracks', [
+                'order_number' => 'PG-CONF-001',
+                'customer_name' => 'Joao Silva',
+                'customer_email' => 'joao@example.com',
+                'preferred_locale' => 'pt',
+                'product_name' => 'Smartphone',
+                'shipping_address' => 'Maputo',
+            ]);
+
+        $response->assertCreated();
+
+        $confirmedStage = collect($response->json('data.stages'))
+            ->firstWhere('key', 'confirmed');
+
+        $this->assertNotNull($confirmedStage);
+        $this->assertTrue($confirmedStage['is_confirmed']);
+        $this->assertSame('Sim', $confirmedStage['confirmed']);
+        $this->assertSame('current', $confirmedStage['state']);
+        $this->assertNotEmpty($confirmedStage['reached_at']);
+    }
+
     public function test_it_rejects_api_requests_without_a_valid_tracking_token(): void
     {
         $this->postJson('/api/tracks', [])

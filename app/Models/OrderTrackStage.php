@@ -28,6 +28,7 @@ class OrderTrackStage extends Model
     {
         return [
             'stage_key' => TrackingStage::class,
+            'position' => 'integer',
             'planned_for_at' => 'datetime',
             'reached_at' => 'datetime',
             'manual_override' => 'boolean',

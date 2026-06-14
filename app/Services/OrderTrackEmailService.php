@@ -35,27 +35,10 @@ class OrderTrackEmailService
         return $this->queueNotification($track, OrderTrackEmailType::InTransitDelay, TrackingStage::InTransit, null, $dispatch);
     }
 
-    public function dispatchTrackCreatedNotificationAfterResponse(OrderTrack $track): void
+    public function dispatchQueuedEmailAsync(OrderTrackEmail $emailLog): void
     {
-        $emailLog = $track->emails()
-            ->where('notification_type', OrderTrackEmailType::TrackCreated->value)
-            ->first();
-
-        if (! $emailLog) {
-            return;
-        }
-
-        $this->dispatchQueuedEmailAfterResponse($emailLog);
-    }
-
-    public function dispatchQueuedEmail(OrderTrackEmail $emailLog): void
-    {
-        SendOrderTrackEmailJob::dispatch($emailLog->id);
-    }
-
-    public function dispatchQueuedEmailAfterResponse(OrderTrackEmail $emailLog): void
-    {
-        SendOrderTrackEmailJob::dispatchAfterResponse($emailLog->id);
+        SendOrderTrackEmailJob::dispatch($emailLog->id)
+            ->onConnection((string) config('order_track.email_dispatch.connection', config('queue.default')));
     }
 
     public function processPendingEmails(int $limit = 50): int
@@ -133,7 +116,7 @@ class OrderTrackEmailService
         ]);
 
         if ($dispatch) {
-            $this->dispatchQueuedEmail($emailLog);
+            $this->dispatchQueuedEmailAsync($emailLog);
         }
 
         return $emailLog;

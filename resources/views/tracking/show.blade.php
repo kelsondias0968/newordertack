@@ -80,6 +80,11 @@
                                 </div>
                                 <p>{{ $stage->description }}</p>
                                 <p class="helper" style="margin-top: 6px;">
+                                    {{ __('tracking.common.confirmed_label') }}:
+                                    <span class="confirmation-indicator {{ $stage->reached_at ? 'is-confirmed' : 'is-pending' }}">
+                                        {{ $stage->reached_at ? __('tracking.states.yes') : __('tracking.states.no') }}
+                                    </span>
+                                    |
                                     {{ __('tracking.common.planned_for', ['date' => $stage->planned_for_at->format('d/m/Y H:i')]) }}
                                     @if ($stage->reached_at)
                                         | {{ __('tracking.common.reached_at', ['date' => $stage->reached_at->format('d/m/Y H:i')]) }}

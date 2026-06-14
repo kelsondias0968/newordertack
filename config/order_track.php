@@ -8,6 +8,10 @@ return [
         'in_transit_last_day_hours' => 24,
     ],
 
+    'email_dispatch' => [
+        'connection' => env('ORDER_TRACK_EMAIL_QUEUE_CONNECTION', 'background'),
+    ],
+
     'email_branding' => [
         'logo_url' => env('ORDER_TRACK_EMAIL_LOGO_URL'),
         'contact' => env('ORDER_TRACK_EMAIL_CONTACT'),

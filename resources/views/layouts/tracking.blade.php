@@ -566,6 +566,24 @@
             color: var(--danger);
         }
 
+        .confirmation-indicator {
+            display: inline-flex;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .confirmation-indicator.is-confirmed {
+            color: var(--success);
+        }
+
+        .confirmation-indicator.is-pending {
+            color: var(--muted);
+        }
+
+        .timeline-item.current h3 {
+            color: var(--brand-deep);
+        }
+
         .pill {
             display: inline-flex;
             align-items: center;

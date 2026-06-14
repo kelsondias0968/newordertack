@@ -15,7 +15,7 @@ class OrderTrackEmailNotificationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_track_creation_dispatches_the_created_email_after_response(): void
+    public function test_track_creation_dispatches_the_created_email_async(): void
     {
         Bus::fake();
 
@@ -44,7 +44,7 @@ class OrderTrackEmailNotificationTest extends TestCase
             'locale' => 'pt',
         ]);
 
-        Bus::assertDispatchedAfterResponse(SendOrderTrackEmailJob::class, 1);
+        Bus::assertDispatched(SendOrderTrackEmailJob::class, 1);
     }
 
     public function test_email_job_sends_the_created_notification_in_portuguese(): void

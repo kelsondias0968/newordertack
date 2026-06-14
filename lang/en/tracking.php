@@ -37,6 +37,8 @@ return [
         'completed' => 'Completed',
         'current' => 'Current',
         'pending' => 'Pending',
+        'yes' => 'Yes',
+        'no' => 'No',
         'auto' => 'Auto',
         'manual' => 'Manual',
         'on' => 'On',
@@ -78,6 +80,7 @@ return [
         'no_estimate' => 'No estimate yet',
         'planned_for' => 'Planned for :date',
         'reached_at' => 'reached at :date',
+        'confirmed_label' => 'Confirmed',
         'not_available' => '-',
     ],
     'index' => [
