@@ -75,7 +75,7 @@ class SendOrderTrackEmailJob implements ShouldQueue
                 'last_error' => $exception->getMessage(),
             ])->save();
 
-            throw $exception;
+            report($exception);
         }
     }
 }
