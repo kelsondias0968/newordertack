@@ -19,8 +19,9 @@ WORKDIR /var/www
 COPY . .
 COPY --from=frontend /app/public/build ./public/build
 
-RUN composer install --no-dev --optimize-autoloader --no-interaction && \
-    composer require resend/resend-laravel --no-dev --optimize-autoloader --no-interaction
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer require resend/resend-laravel --no-dev --optimize-autoloader --no-interaction
 
 RUN chmod -R 777 storage bootstrap/cache
 
