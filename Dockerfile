@@ -21,7 +21,7 @@ COPY --from=frontend /app/public/build ./public/build
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --no-dev --optimize-autoloader --no-interaction
-RUN composer require resend/resend-php --no-dev --optimize-autoloader --no-interaction
+RUN composer require resend/resend-php --optimize-autoloader --no-interaction
 
 RUN chmod -R 777 storage bootstrap/cache
 
