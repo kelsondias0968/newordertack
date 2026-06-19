@@ -23,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('tracking:emails:process')->everyTwoMinutes()->withoutOverlapping();
     })
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->trustProxies(at: '*');
         $middleware->web(append: [
             SetLocale::class,
         ]);

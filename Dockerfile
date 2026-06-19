@@ -25,4 +25,4 @@ RUN chmod -R 777 storage bootstrap/cache
 
 EXPOSE 8000
 
-CMD sh -c "php artisan migrate --force && php artisan storage:link --force && php artisan config:cache && php artisan route:cache && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"
+CMD sh -c "php artisan migrate --force && php artisan storage:link --force && php artisan config:cache && php artisan route:cache && (php artisan schedule:work &) && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"
