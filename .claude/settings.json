@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/kelsondias/Downloads/order-track commit -m ' *)",
+      "Bash(git -C /Users/kelsondias/Downloads/order-track add config/mail.php)",
+      "WebFetch(domain:resend.com)",
+      "Bash(git -C /Users/kelsondias/Downloads/order-track add -A)"
+    ]
+  }
+}

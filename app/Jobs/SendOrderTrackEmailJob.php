@@ -47,7 +47,7 @@ class SendOrderTrackEmailJob implements ShouldQueue
             ->findOrFail($this->orderTrackEmailId);
 
         try {
-            $mailer = Mail::mailer('smtp');
+            $mailer = Mail::mailer(config('mail.default'));
             $message = $mailer->to($emailLog->recipient_email, $emailLog->recipient_name);
 
             if (! empty($emailLog->cc)) {
