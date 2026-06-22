@@ -48,7 +48,7 @@ enum Marketplace: string
             self::Worten => [
                 'name'    => 'Worten',
                 'color'   => '#E30613',
-                'logo'    => 'https://i.postimg.cc/VkxV8N88/worten-desktop-Dl-N-JMO0.jpg',
+                'logo'    => 'https://i.postimg.cc/qvRM64gc/worten-logo-removebg-preview.png',
                 'contact' => 'Worten Apoio ao Cliente',
                 'email'   => config('order_track.email_branding.email'),
                 'address' => config('order_track.email_branding.address'),

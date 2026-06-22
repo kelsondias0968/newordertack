@@ -6,7 +6,7 @@
     $isDelivered            = $stage === \App\Enums\TrackingStage::Delivered;
     $isDelay                = $emailType === \App\Enums\OrderTrackEmailType::InTransitDelay;
     $stageTime              = $isDelay ? null : $stageRecord?->planned_for_at?->locale('pt')->translatedFormat('d \d\e F \d\e Y');
-    $logoUrl                = 'https://i.postimg.cc/VkxV8N88/worten-desktop-Dl-N-JMO0.jpg';
+    $logoUrl                = 'https://i.postimg.cc/qvRM64gc/worten-logo-removebg-preview.png';
 
     // Stage icon map (inline SVG as data URI embedded in style)
     $stageIconColor = '#E30613';

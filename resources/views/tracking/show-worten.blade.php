@@ -352,7 +352,7 @@
 {{-- ── Top nav ── --}}
 <nav class="w-nav">
     <img class="w-nav-logo"
-         src="https://i.postimg.cc/VkxV8N88/worten-desktop-Dl-N-JMO0.jpg"
+         src="https://i.postimg.cc/qvRM64gc/worten-logo-removebg-preview.png"
          alt="Worten">
     <div class="w-nav-icons">
         <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
