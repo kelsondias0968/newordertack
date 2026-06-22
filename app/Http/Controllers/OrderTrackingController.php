@@ -57,8 +57,14 @@ class OrderTrackingController extends Controller
 
         $track = $orderTrackService->syncCurrentStage($track);
 
-        return view('tracking.show', [
-            'track' => $track,
+        $view = match ($track->marketplace?->value) {
+            'worten' => 'tracking.show-worten',
+            'amazon' => 'tracking.show-amazon',
+            default  => 'tracking.show',
+        };
+
+        return view($view, [
+            'track'      => $track,
             'issueTypes' => \App\Http\Requests\StoreOrderTrackIssueRequest::issueTypes(),
         ]);
     }

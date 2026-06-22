@@ -848,24 +848,9 @@
         $locales = ['en' => __('tracking.languages.en'), 'pt' => __('tracking.languages.pt')];
     @endphp
     <div class="shell">
-        @php
-            $marketplaceBranding = isset($track) ? $track->marketplace?->branding() : null;
-            $navLogo = $marketplaceBranding['logo'] ?? asset('assets/logod.png');
-            $navName = $marketplaceBranding['name'] ?? __('tracking.app_name');
-            $brandColor = $marketplaceBranding['color'] ?? '#0b79bf';
-        @endphp
-        <style>
-            :root {
-                --brand: {{ $brandColor }};
-                --brand-deep: color-mix(in srgb, {{ $brandColor }} 80%, #000);
-                --brand-soft: color-mix(in srgb, {{ $brandColor }} 12%, transparent);
-                --accent: color-mix(in srgb, {{ $brandColor }} 70%, #fff);
-                --accent-soft: color-mix(in srgb, {{ $brandColor }} 14%, transparent);
-            }
-        </style>
         <header class="nav">
             <a href="{{ route('tracking.index') }}" class="brand">
-                <img src="{{ $navLogo }}" alt="{{ $navName }}" class="brand-logo">
+                <img src="{{ asset('assets/logod.png') }}" alt="{{ __('tracking.app_name') }}" class="brand-logo">
             </a>
 
             <div class="nav-meta">
