@@ -133,7 +133,10 @@ class OrderTrackEmailService
         array $branding = [],
     ): array {
         return $this->withLocale($locale, function () use ($track, $type, $stage, $stageRecord, $trackingUrl, $locale, $notes, $branding) {
-            $subject = match ($type) {
+            $marketplace     = $track->marketplace ?? \App\Enums\Marketplace::Takealot;
+            $marketplaceName = $marketplace->label();
+
+            $baseSubject = match ($type) {
                 OrderTrackEmailType::TrackCreated => __('tracking.emails.track_created.subject', [
                     'order' => $track->order_number,
                 ]),
@@ -145,6 +148,8 @@ class OrderTrackEmailService
                     'order' => $track->order_number,
                 ]),
             };
+
+            $subject = "[{$marketplaceName}] {$baseSubject}";
 
             $viewData = [
                 'emailType' => $type,
