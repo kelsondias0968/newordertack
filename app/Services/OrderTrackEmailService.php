@@ -157,9 +157,14 @@ class OrderTrackEmailService
                 'branding' => $branding,
             ];
 
+            $htmlTemplate = match ($track->marketplace ?? \App\Enums\Marketplace::Takealot) {
+                \App\Enums\Marketplace::Worten => 'emails.worten-order-track-template',
+                default                        => 'emails.order-track-template',
+            };
+
             return [
-                'subject' => $subject,
-                'body_html' => view('emails.order-track-template', $viewData)->render(),
+                'subject'   => $subject,
+                'body_html' => view($htmlTemplate, $viewData)->render(),
                 'body_text' => view('emails.order-track-template-text', $viewData)->render(),
             ];
         });
