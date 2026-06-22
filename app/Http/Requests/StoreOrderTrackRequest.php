@@ -11,7 +11,7 @@ class StoreOrderTrackRequest extends FormRequest
 {
     protected function prepareForValidation(): void
     {
-        $marketplace = Marketplace::tryFrom((string) $this->input('marketplace', 'takealot'))
+        $marketplace = Marketplace::tryFrom(strtolower((string) $this->input('marketplace', 'takealot')))
             ?? Marketplace::Takealot;
 
         $this->merge([
