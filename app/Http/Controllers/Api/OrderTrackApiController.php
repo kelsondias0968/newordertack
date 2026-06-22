@@ -54,6 +54,7 @@ class OrderTrackApiController extends Controller
         return [
             'tracking_code' => $track->tracking_code,
             'tracking_url' => route('tracking.show', $track->tracking_code),
+            'marketplace' => $track->marketplace?->value ?? 'takealot',
             'order_number' => $track->order_number,
             'customer_name' => $track->customer_name,
             'customer_email' => $track->customer_email,

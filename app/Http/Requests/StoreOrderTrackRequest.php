@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Marketplace;
 use App\Enums\TrackingStage;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -10,8 +11,13 @@ class StoreOrderTrackRequest extends FormRequest
 {
     protected function prepareForValidation(): void
     {
+        $marketplace = Marketplace::tryFrom((string) $this->input('marketplace', 'takealot'))
+            ?? Marketplace::Takealot;
+
         $this->merge([
-            'notification_cc' => $this->normalizeEmailList($this->input('notification_cc')),
+            'marketplace'     => $marketplace->value,
+            'preferred_locale' => $this->input('preferred_locale') ?? $marketplace->locale(),
+            'notification_cc'  => $this->normalizeEmailList($this->input('notification_cc')),
             'notification_bcc' => $this->normalizeEmailList($this->input('notification_bcc')),
         ]);
     }
@@ -29,6 +35,7 @@ class StoreOrderTrackRequest extends FormRequest
             'customer_name' => ['nullable', 'string', 'max:120'],
             'customer_email' => ['required', 'email', 'max:180'],
             'customer_phone' => ['nullable', 'string', 'max:40'],
+            'marketplace'      => ['nullable', 'string', Rule::enum(Marketplace::class)],
             'preferred_locale' => ['nullable', 'string', Rule::in(['en', 'pt'])],
             'notification_cc' => ['nullable', 'array'],
             'notification_cc.*' => ['email', 'max:180'],

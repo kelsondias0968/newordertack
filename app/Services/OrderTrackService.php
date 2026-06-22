@@ -41,6 +41,7 @@ class OrderTrackService
                 'product_image_url' => $data['product_image_url'] ?? null,
                 'shipping_address' => $data['shipping_address'] ?? null,
                 'notes' => $data['notes'] ?? null,
+                'marketplace' => $data['marketplace'] ?? 'takealot',
                 'current_stage' => TrackingStage::Confirmed,
                 'auto_progress' => (bool) ($data['auto_progress'] ?? true),
                 'placed_at' => $placedAt,

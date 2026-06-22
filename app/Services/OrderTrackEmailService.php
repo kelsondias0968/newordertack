@@ -84,7 +84,7 @@ class OrderTrackEmailService
         $stageRecord = $track->stages->first(
             fn (OrderTrackStage $item) => $item->stage_key === $stage
         );
-        $branding = $this->resolveEmailBranding();
+        $branding = $this->resolveEmailBranding($track);
 
         $content = $this->renderContent($track, $type, $stage, $stageRecord, $trackingUrl, $locale, $notes, $branding);
 
@@ -185,15 +185,18 @@ class OrderTrackEmailService
         }
     }
 
-    protected function resolveEmailBranding(): array
+    protected function resolveEmailBranding(OrderTrack $track): array
     {
-        $defaultLogoUrl = rtrim((string) config('app.url'), '/').'/assets/logod.png';
+        $marketplace = $track->marketplace ?? \App\Enums\Marketplace::Takealot;
+        $branding = $marketplace->branding();
 
         return [
-            'logo_url' => config('order_track.email_branding.logo_url') ?: $defaultLogoUrl,
-            'contact' => config('order_track.email_branding.contact') ?: config('mail.from.name'),
-            'email' => config('order_track.email_branding.email') ?: config('mail.from.address'),
-            'address' => config('order_track.email_branding.address'),
+            'logo_url' => $branding['logo'] ?: rtrim((string) config('app.url'), '/').'/assets/logod.png',
+            'contact'  => $branding['contact'],
+            'email'    => $branding['email'],
+            'address'  => $branding['address'],
+            'color'    => $branding['color'],
+            'name'     => $branding['name'],
         ];
     }
 }

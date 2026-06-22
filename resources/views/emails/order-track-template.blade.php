@@ -23,8 +23,8 @@
         @endif
 
         <div style="background:#ffffff; border-radius:24px; border:1px solid #d4e5f2; overflow:hidden;">
-            <div style="padding:28px 28px 18px; background:linear-gradient(135deg, #0b79bf 0%, #00b8e6 100%); color:#ffffff;">
-                <p style="margin:0 0 10px; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; opacity:0.86;">{{ __('tracking.app_name') }}</p>
+            <div style="padding:28px 28px 18px; background:linear-gradient(135deg, {{ $branding['color'] ?? '#0b79bf' }} 0%, {{ $branding['color'] ?? '#0b79bf' }}bb 100%); color:#ffffff;">
+                <p style="margin:0 0 10px; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; opacity:0.86;">{{ $branding['name'] ?? __('tracking.app_name') }}</p>
                 @if ($emailType === \App\Enums\OrderTrackEmailType::TrackCreated)
                     <h1 style="margin:0; font-size:28px; line-height:1.15;">{{ __('tracking.emails.track_created.heading') }}</h1>
                 @elseif ($emailType === \App\Enums\OrderTrackEmailType::InTransitDelay)

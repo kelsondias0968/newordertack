@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Marketplace;
 use App\Enums\TrackingStage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,7 @@ class OrderTrack extends Model
         'customer_email',
         'customer_phone',
         'preferred_locale',
+        'marketplace',
         'notification_cc',
         'notification_bcc',
         'product_name',
@@ -35,6 +37,7 @@ class OrderTrack extends Model
     protected function casts(): array
     {
         return [
+            'marketplace' => Marketplace::class,
             'current_stage' => TrackingStage::class,
             'auto_progress' => 'boolean',
             'notification_cc' => 'array',
