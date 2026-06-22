@@ -5,6 +5,7 @@ namespace App\Mail;
 use App\Models\OrderTrackEmail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -21,7 +22,10 @@ class OrderTrackNotificationMail extends Mailable
 
     public function envelope(): Envelope
     {
+        $fromName = $this->emailLog->meta['branding']['name'] ?? config('mail.from.name');
+
         return new Envelope(
+            from: new Address(config('mail.from.address'), $fromName),
             subject: $this->emailLog->subject,
         );
     }
