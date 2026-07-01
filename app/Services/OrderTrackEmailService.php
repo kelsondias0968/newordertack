@@ -164,6 +164,7 @@ class OrderTrackEmailService
 
             $htmlTemplate = match ($track->marketplace ?? \App\Enums\Marketplace::Takealot) {
                 \App\Enums\Marketplace::Worten => 'emails.worten-order-track-template',
+                \App\Enums\Marketplace::Amazon => 'emails.amazon-order-track-template',
                 default                        => 'emails.order-track-template',
             };
 
